@@ -19,14 +19,21 @@ def get_top_10_cryptos():
         "page": 1,
         "sparkline": "false"
     }
+
     response = requests.get(url, params=params)
+
     try:
         data = response.json()
+        if isinstance(data, list) and all(isinstance(coin, dict) for coin in data):
+            return data
+        else:
+            print("⚠️ Noto‘g‘ri formatdagi javob keldi:", data)
+            raise ValueError("API noto‘g‘ri formatda javob qaytardi")
     except Exception as e:
-        print("JSON olishda xatolik:", e)
-        print("API javobi (text):", response.text)
+        print("❌ JSON xatosi:", e)
+        print("❌ API javobi (matn):", response.text)
         raise e
-    return data
+
 
 def make_message(data):
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
