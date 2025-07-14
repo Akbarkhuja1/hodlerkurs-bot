@@ -36,7 +36,11 @@ def make_message(data):
 if __name__ == "__main__":
     try:
         cryptos = get_top_10_cryptos()
+        print("✅ Crypto ma'lumotlar olindi")
         msg = make_message(cryptos)
+        print("✅ Xabar tayyorlandi")
         bot.send_message(chat_id=CHANNEL_USERNAME, text=msg, parse_mode="HTML", disable_web_page_preview=True)
+        print("✅ Xabar yuborildi")
     except Exception as e:
         print(f"Xatolik: {e}")
+
