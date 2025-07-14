@@ -5,13 +5,28 @@ from telegram import Bot
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHANNEL_USERNAME = os.getenv("CHANNEL_USERNAME")
+print("BOT_TOKEN:", BOT_TOKEN)
+print("CHANNEL_USERNAME:", CHANNEL_USERNAME)
+
 bot = Bot(token=BOT_TOKEN)
 
 def get_top_10_cryptos():
     url = "https://api.coingecko.com/api/v3/coins/markets"
-    params = {"vs_currency": "usd", "order": "market_cap_desc", "per_page": 10, "page": 1, "sparkline": "false"}
+    params = {
+        "vs_currency": "usd",
+        "order": "market_cap_desc",
+        "per_page": 10,
+        "page": 1,
+        "sparkline": "false"
+    }
     response = requests.get(url, params=params)
-    return response.json()
+    try:
+        data = response.json()
+    except Exception as e:
+        print("JSON olishda xatolik:", e)
+        print("API javobi (text):", response.text)
+        raise e
+    return data
 
 def make_message(data):
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
